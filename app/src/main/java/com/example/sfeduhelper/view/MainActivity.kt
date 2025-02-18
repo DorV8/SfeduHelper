@@ -25,11 +25,14 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val viewModel = UserViewModel()
                     viewModel.setDirections()
+                    viewModel.setLinks()
                     NavigationApp(viewModel)
                 }
             }
         }
     }
 }
+
+
 
 

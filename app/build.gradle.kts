@@ -41,6 +41,8 @@ android {
 
 dependencies {
 
+    implementation(libs.coil.compose) // Последняя версия Coil
+    implementation(libs.coil.svg) // Поддержка SVG
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

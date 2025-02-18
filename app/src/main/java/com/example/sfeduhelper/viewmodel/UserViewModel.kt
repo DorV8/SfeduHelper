@@ -1,6 +1,8 @@
 package com.example.sfeduhelper.viewmodel
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import com.example.sfeduhelper.classes.Link
 import com.example.sfeduhelper.classes.User
 import com.example.sfeduhelper.model.UserModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,8 +39,34 @@ class UserViewModel: ViewModel() {
         return userModel.getAllNameDirections()
     }
 
+    fun selectCodeDirectionsBySctruct(nameStruct: String): List<String>{
+        return userModel.selectCodeDirectionsBySctruct(nameStruct)
+    }
+
     fun setDirections() {
         userModel.setDirections()
     }
+
+    fun setLinks() {
+        userModel.setLinks()
+    }
+    fun getLinks(): MutableList<Link> {
+        return userModel.getLinks()
+    }
     //здесь должны быть абстрактные функции, которые вызывают функции в самой модели
+
+
+    fun getRGBColor(red: Int, green: Int, blue: Int): Color {
+        val hexColor = (red shl 16) or (green shl 8) or blue
+        val myColor = Color(0xFF000000 or hexColor.toLong())
+        return myColor
+    }
+
+    fun setAfter(after: String){
+        userModel.setAfter(after)
+    }
+
+    fun getAfter() {
+        userModel.getAfter()
+    }
 }

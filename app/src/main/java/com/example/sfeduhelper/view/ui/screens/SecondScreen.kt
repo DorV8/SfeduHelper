@@ -24,10 +24,9 @@ import com.example.sfeduhelper.R
 import com.example.sfeduhelper.viewmodel.UserViewModel
 
 @Composable
-fun StartScreen(navController: NavController, viewModel: UserViewModel){
+fun SecondScreen(navController: NavController, viewModel: UserViewModel){
     val background = painterResource(R.drawable.start_background)
 
-    //viewModel.setDirections()
     Image(
         painter = background,
         contentDescription = null,
@@ -41,16 +40,14 @@ fun StartScreen(navController: NavController, viewModel: UserViewModel){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Как вы поступаете?",
-            style = MaterialTheme.typography.headlineMedium,
+            text = "Выберите свой вариант:",
+            style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
         Button(
-            onClick = {
-                viewModel.setAfter("SPO")
-                navController.navigate("SecondScreen")},
+            onClick = { navController.navigate("MainMenuPage")},
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonColors(
                 containerColor = viewModel.getRGBColor(143, 74, 234),
@@ -59,15 +56,13 @@ fun StartScreen(navController: NavController, viewModel: UserViewModel){
                 disabledContentColor = Color.White
             )
         ) {
-            Text(text = "После СПО")
+            Text(text = "Я хочу узнать о специальностях", textAlign = TextAlign.Center)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
 
         Button(
-            onClick = {
-                viewModel.setAfter("EGE")
-                navController.navigate("SecondScreen")},
+            onClick = { navController.navigate("AddSpecialtyPage")},
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonColors(
                 containerColor = viewModel.getRGBColor(143, 74, 234),
@@ -76,13 +71,14 @@ fun StartScreen(navController: NavController, viewModel: UserViewModel){
                 disabledContentColor = Color.White
             )
         ) {
-            Text(text = "После ЕГЭ")
+            Text(text = "Я уже выбрал подходящие специальности", textAlign = TextAlign.Center)
         }
 
         Text(
             text = "Если вы первокурсник, то можете выбрать любой вариант и в дальнейшем авторизоваться в настройках.",
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
+            color = Color.Transparent,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp)

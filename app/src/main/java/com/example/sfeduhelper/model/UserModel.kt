@@ -35,7 +35,7 @@ class UserModel {
                 StudyDirection(
                     codeDirection = "0$i.0$i.0$i",
                     nameDirection = "Направление $i",
-                    structDivision = "Опция " + Random.nextInt(5)
+                    structDivision = "Опция " + Random.nextInt(4)
                 )
             )
         }
@@ -47,6 +47,14 @@ class UserModel {
                 direction -> CodeDirections.add(direction.codeDirection)
         }
         return CodeDirections
+    }
+
+    fun getPriorities(): List<Int> {
+        var priorities: MutableList<Int> = mutableListOf()
+        directions.forEach { direction ->
+            priorities.add(direction.levelPriority)
+        }
+        return priorities
     }
 
     fun getAllCodeDirections(): List<String>{
@@ -80,6 +88,10 @@ class UserModel {
         }
 
         sortDirections()
+    }
+
+    fun DeleteDirection(codeDirection: String) {
+        directions.remove(directions.find { x -> x.codeDirection == codeDirection })
     }
 
     fun selectCodeDirectionsBySctruct(nameStruct: String): List<String>{

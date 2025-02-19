@@ -24,4 +24,5 @@ public class StudyDirection (var structDivision: String, var codeDirection: Stri
     fun AddExamWithScore(nameExam: String, passScore: Int){
         Exams.add(Exam(nameExam, passScore))
     }
+
 }

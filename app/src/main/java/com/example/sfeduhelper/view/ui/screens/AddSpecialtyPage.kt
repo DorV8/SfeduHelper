@@ -2,7 +2,10 @@
 
 package com.example.sfeduhelper.view.ui.screens
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,12 +32,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.contentValuesOf
 import androidx.navigation.NavController
 import com.example.sfeduhelper.R
 import com.example.sfeduhelper.viewmodel.UserViewModel
@@ -41,6 +47,7 @@ import com.example.sfeduhelper.viewmodel.UserViewModel
 @Composable
 fun AddSpecialtyPage(navController: NavController, viewModel: UserViewModel) {
 
+    val context = LocalContext.current
     val background = painterResource(R.drawable.main_background)
 
     Image(
@@ -66,13 +73,14 @@ fun AddSpecialtyPage(navController: NavController, viewModel: UserViewModel) {
             Header()
             Text(
                 text = "Структурное подразделение:",
-                modifier = Modifier.padding(start = 5.dp, top = 5.dp)
+                modifier = Modifier.padding(start = 10.dp, top = 5.dp, bottom = 10.dp)
             )
             ExposedDropdownMenuBox(
                 expanded = expandedStruct,
                 onExpandedChange = { expandedStruct = !expandedStruct },
                 modifier = Modifier
                     .padding(start = 10.dp, end = 10.dp)
+                    .background(color = Color.Transparent, shape = RoundedCornerShape(24.dp))
             ) {
                 Box(
                     modifier = Modifier
@@ -86,7 +94,12 @@ fun AddSpecialtyPage(navController: NavController, viewModel: UserViewModel) {
                 ) {
                     TextField(
                         value = selectedOptionStruct,
-                        onValueChange = {},
+                        onValueChange = {
+                            optionsCode = viewModel.selectCodeDirectionsBySctruct(selectedOptionStruct)
+                            optionsCode.forEach {
+                                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                            }
+                        },
                         readOnly = true,
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedStruct)
@@ -104,23 +117,32 @@ fun AddSpecialtyPage(navController: NavController, viewModel: UserViewModel) {
 
                 ExposedDropdownMenu(
                     expanded = expandedStruct,
-                    onDismissRequest = { expandedStruct = false }
+                    onDismissRequest = { expandedStruct = false },
+                    modifier = Modifier
+                        .background(Color.Transparent)
+                        .clip(RoundedCornerShape(24.dp))
                 ) {
                     optionsSctruct.forEach { option ->
-                        DropdownMenuItem(
-                            text = { Text(text = option) },
-                            onClick = {
-                                selectedOptionStruct = option
-                                expandedStruct = false
-                            }
-                        )
+                            DropdownMenuItem(
+                                text = { Text(text = option) },
+                                onClick = {
+                                    selectedOptionStruct = option
+                                    expandedStruct = false
+
+                                    optionsCode = viewModel.selectCodeDirectionsBySctruct(selectedOptionStruct)
+                                    selectedOptionCode = ""
+                                },
+                                modifier = Modifier
+                                    .height(40.dp)
+                                    .fillMaxWidth()
+                            )
                     }
                 }
             }
 
             Text(
                 text = "Код специальности:",
-                modifier = Modifier.padding(start = 5.dp, top = 5.dp)
+                modifier = Modifier.padding(start = 10.dp, top = 5.dp, bottom = 10.dp)
             )
 
             ExposedDropdownMenuBox(
@@ -174,13 +196,13 @@ fun AddSpecialtyPage(navController: NavController, viewModel: UserViewModel) {
 
             Text(
                 text = "Приоритет:",
-                modifier = Modifier.padding(start = 5.dp, top = 5.dp)
+                modifier = Modifier.padding(start = 10.dp, top = 5.dp, bottom = 10.dp)
             )
             OutlinedTextField(
                 value = priorityLevel,
                 onValueChange = { priorityLevel = it },
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(start = 10.dp, bottom = 10.dp, end = 10.dp)
                     .fillMaxWidth()
                     .border(3.dp, viewModel.getRGBColor(97, 113, 238), RoundedCornerShape(24.dp))
                     .clip(RoundedCornerShape(24.dp)),
@@ -207,7 +229,7 @@ fun AddSpecialtyPage(navController: NavController, viewModel: UserViewModel) {
         }
         Button(
             onClick = {
-                clickReady(navController, viewModel, selectedOptionCode, priorityLevel)
+                clickReady(navController, viewModel, selectedOptionCode, priorityLevel, context)
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter)//.align(alignment = Alignment.BottomCenter) // Выравнивание по центру внизу
@@ -245,23 +267,51 @@ fun Header(){
     }
 }
 
-fun clickReady(navController: NavController, viewModel: UserViewModel, selectedOptionCode: String, priorityLevel: String){
+fun clickReady(navController: NavController, viewModel: UserViewModel, selectedOptionCode: String, priorityLevel: String, context: Context){
+
     if (selectedOptionCode.isNotEmpty() || selectedOptionCode.isNotBlank())
     {
-        var priority: Int
-        try {
-            priority = priorityLevel.toInt()
-            if (priority > 3){
-                priority = 3
-            }
-            else if (priority < 1) {
-                priority = 1
-            }
-            viewModel.addDirectionToUser(selectedOptionCode, priority)
-            navController.navigate("ProfilePage")
+        if (viewModel.getSelectedCodeDirections().contains(selectedOptionCode)) {
+            Toast.makeText(context, "Данная специальность уже была выбрана, для редактирования необходимо удалить специальность и добавить снова.", Toast.LENGTH_LONG).show()
         }
-        catch (exception: Exception){
-            println("Ошибка")
+        else {
+                var priority: Int
+
+                if (priorityLevel.isEmpty()) {
+                    Toast.makeText(context, "Введите уровень приоритета (от 1 до 3)", Toast.LENGTH_LONG).show()
+                }
+                else
+                    try {
+                        priority = priorityLevel.toInt()
+
+                        var priorityChanged = false
+                        if (priority > 3){
+                            priority = 3
+                            priorityChanged = true
+                        }
+                        else if (priority < 1) {
+                            priority = 1
+                            priorityChanged = true
+                        }
+
+                        if (viewModel.getPriorities().contains(priority)) {
+                            Toast.makeText(context, "Уже была выбрана специальность с таким приоритетом", Toast.LENGTH_LONG).show()
+                        }
+                        else {
+                            viewModel.addDirectionToUser(selectedOptionCode, priority)
+                            navController.navigate("ProfilePage")
+
+                            if (priorityChanged) {
+                                Toast.makeText(context, "Введённый уровень приоритета был округлён к ближайшему допустимому значению", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                    catch (exception: Exception){
+                        Toast.makeText(context, "Упс! Кажется вы ввели некорректные данные.", Toast.LENGTH_LONG).show()
+                    }
         }
+    }
+    else {
+        Toast.makeText(context, "Введите все нужные данные", Toast.LENGTH_LONG).show()
     }
 }

@@ -69,4 +69,12 @@ class UserViewModel: ViewModel() {
     fun getAfter() {
         userModel.getAfter()
     }
+
+    fun getPriorities(): List<Int> {
+        return userModel.getPriorities()
+    }
+
+    fun deleteDirection(codeDirection: String) {
+        userModel.DeleteDirection(codeDirection)
+    }
 }

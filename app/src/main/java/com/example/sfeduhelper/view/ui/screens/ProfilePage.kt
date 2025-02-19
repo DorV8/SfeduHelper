@@ -3,6 +3,7 @@ package com.example.sfeduhelper.view.ui.screens
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,6 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -70,16 +73,48 @@ fun ProfilePage(navController: NavController, viewModel: UserViewModel) {
             )
             val selectedDirections =
                 viewModel.getSelectedCodeDirections()//List(3) { "Элемент ${it + 1}" }
-
+            val selectedDirectionsPriorities = viewModel.getPriorities()
             LazyColumn(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(selectedDirections) { item ->
-                    TextItem(text = item)
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(24.dp))
+                            .background(
+                                brush = Brush.linearGradient(
+                                    listOf(
+                                        viewModel.getRGBColor(97, 113, 238),
+                                        viewModel.getRGBColor(180, 39, 240)
+                                    ),
+                                    start = androidx.compose.ui.geometry.Offset(0f, 0f),
+                                    end = androidx.compose.ui.geometry.Offset.Infinite
+                                )
+                            )
+                            .padding(6.dp)
+                    ) {
+                        Row (modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                "${selectedDirectionsPriorities[selectedDirections.indexOf(item)]}.",
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                                    .padding(start = 6.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = item,
+                                color = Color.White,
+                                modifier = Modifier.align(Alignment.CenterVertically)
+                            )
+                        }
+                    }
                 }
             }
 
+            //добавить проверку на количество добавленных специальностей
             Button(
                 onClick = { navController.navigate("AddSpecialtyPage") },
                 modifier = Modifier

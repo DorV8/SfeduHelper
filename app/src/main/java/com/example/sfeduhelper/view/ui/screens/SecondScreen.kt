@@ -48,7 +48,9 @@ fun SecondScreen(navController: NavController, viewModel: UserViewModel){
 
         Button(
             onClick = { navController.navigate("MainMenuPage")},
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp),
             colors = ButtonColors(
                 containerColor = viewModel.getRGBColor(143, 74, 234),
                 contentColor = Color.White,
@@ -63,7 +65,9 @@ fun SecondScreen(navController: NavController, viewModel: UserViewModel){
 
         Button(
             onClick = { navController.navigate("AddSpecialtyPage")},
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp),
             colors = ButtonColors(
                 containerColor = viewModel.getRGBColor(143, 74, 234),
                 contentColor = Color.White,

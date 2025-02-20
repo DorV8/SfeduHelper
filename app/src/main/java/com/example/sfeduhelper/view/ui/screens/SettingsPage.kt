@@ -3,6 +3,7 @@ package com.example.sfeduhelper.view.ui.screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -111,7 +112,8 @@ fun SettingsPage(navController: NavController, viewModel: UserViewModel){
                     StateCard(
                         text = "Со звуком",
                         isSelected = selectedOptionNotifications == "Option1",
-                        onClick = { selectedOptionNotifications = "Option1" }
+                        onClick = { selectedOptionNotifications = "Option1" },
+                        viewModel
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -119,7 +121,8 @@ fun SettingsPage(navController: NavController, viewModel: UserViewModel){
                     StateCard(
                         text = "Вибрация",
                         isSelected = selectedOptionNotifications == "Option2",
-                        onClick = { selectedOptionNotifications = "Option2" }
+                        onClick = { selectedOptionNotifications = "Option2" },
+                        viewModel
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -127,7 +130,8 @@ fun SettingsPage(navController: NavController, viewModel: UserViewModel){
                     StateCard(
                         text = "Без звука",
                         isSelected = selectedOptionNotifications == "Option3",
-                        onClick = { selectedOptionNotifications = "Option3" }
+                        onClick = { selectedOptionNotifications = "Option3" },
+                        viewModel
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -137,19 +141,24 @@ fun SettingsPage(navController: NavController, viewModel: UserViewModel){
                     SwitchCard(
                         text = "В приложении",
                         isChecked = notificationsInApp,
-                        onCheckedChange = { notificationsInApp = it}
+                        onCheckedChange = { notificationsInApp = it},
+                        viewModel
                     )
 
                     SwitchCard(
                         text = "В Телеграме",
                         isChecked = notificationInTG,
-                        onCheckedChange = { notificationInTG = it}
+                        onCheckedChange = { notificationInTG = it},
+                        viewModel
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Button(
-                        onClick = { /*сохранение настроек в userModel*/},
+                        onClick = {
+                            viewModel.updateCategoryNotification(selectedOptionNotifications)
+                            viewModel.updateMethodsNotification(notificationInTG, notificationsInApp)
+                        },
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     ) {
                         Text("Сохранить")
@@ -229,13 +238,19 @@ fun ExpandableSettingItem(
 fun SwitchCard(
     text: String,
     isChecked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
+    viewModel: UserViewModel
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(2.dp, viewModel.getRGBColor(97, 113, 238)),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isChecked) viewModel.getRGBAColor(143, 74, 234, (0.56*255).toInt())
+            else viewModel.getRGBColor(247, 249, 251)
+        )
     ) {
         Row(
             modifier = Modifier
@@ -244,7 +259,6 @@ fun SwitchCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            //Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge
@@ -261,7 +275,8 @@ fun SwitchCard(
 fun StateCard(
     text: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    viewModel: UserViewModel
 ) {
     Card(
         modifier = Modifier
@@ -272,9 +287,10 @@ fun StateCard(
                 role = Role.RadioButton
             ),
         shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(2.dp, viewModel.getRGBColor(97, 113, 238)),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
-            else MaterialTheme.colorScheme.surface
+            containerColor = if (isSelected) viewModel.getRGBAColor(143, 74, 234, (0.56*255).toInt())
+            else viewModel.getRGBColor(247, 249, 251)
         )
     ) {
         Row(
@@ -283,14 +299,16 @@ fun StateCard(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RadioButton(
-                selected = isSelected,
-                onClick = null // Управляется родительским контейнером
-            )
-            Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.width(100.dp)
+            )
+            Spacer(modifier = Modifier.width(160.dp))
+            RadioButton(
+                selected = isSelected,
+                modifier = Modifier.fillMaxWidth(),
+                onClick = null // Управляется родительским контейнером
             )
         }
     }

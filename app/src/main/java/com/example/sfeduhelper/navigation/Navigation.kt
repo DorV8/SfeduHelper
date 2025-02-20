@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sfeduhelper.view.ui.screens.AddSpecialtyPage
+import com.example.sfeduhelper.view.ui.screens.AdmissionPage
 import com.example.sfeduhelper.view.ui.screens.DeleteSpecialtyPage
 import com.example.sfeduhelper.view.ui.screens.LinksPage
 import com.example.sfeduhelper.view.ui.screens.MainMenuPage
@@ -35,5 +36,7 @@ fun NavigationApp(viewModel: UserViewModel) {
         composable("LinksPage") { LinksPage(navController, viewModel) }
 
         composable("MainMenuPage") { MainMenuPage(navController, viewModel) }
+
+        composable("AdmissionPage") { AdmissionPage(navController, viewModel) }
     }
 }

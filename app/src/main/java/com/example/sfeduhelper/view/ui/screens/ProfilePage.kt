@@ -1,5 +1,6 @@
 package com.example.sfeduhelper.view.ui.screens
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -11,9 +12,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -37,6 +40,7 @@ import androidx.navigation.NavController
 import com.example.sfeduhelper.R
 import com.example.sfeduhelper.viewmodel.UserViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfilePage(navController: NavController, viewModel: UserViewModel) {
 
@@ -171,8 +175,12 @@ fun ProfilePage(navController: NavController, viewModel: UserViewModel) {
                 onClick = { navController.navigate("LinksPage") }
             )
         }
+        var showDialog by remember { mutableStateOf(false) }
+
         Button(
-            onClick = { navController.navigate("MainMenuPage")},
+            onClick = {
+                showDialog = true
+                navController.navigate("MainMenuPage")},
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
@@ -185,6 +193,31 @@ fun ProfilePage(navController: NavController, viewModel: UserViewModel) {
             )
         ) {
             Text(text = "Закончить настройку")
+        }
+
+        if (showDialog){
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text(text = "Завершение настройки") },
+                text = { Text("Вы точно хотите завершить настройку?") },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            showDialog = false
+                            navController.navigate("MainMenuPage")
+                        }
+                    ) {
+                        Text("Да")
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = { showDialog = false }
+                    ) {
+                        Text("Отмена")
+                    }
+                }
+            )
         }
     }
 }

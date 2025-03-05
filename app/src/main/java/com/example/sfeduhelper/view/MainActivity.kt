@@ -26,6 +26,11 @@ class MainActivity : ComponentActivity() {
                     val viewModel = UserViewModel()
                     viewModel.setDirections()
                     viewModel.setLinks()
+                    viewModel.setFAQ()
+                    viewModel.addNewsSamples()
+
+                    viewModel.addInfoSamples()
+
                     NavigationApp(viewModel)
                 }
             }

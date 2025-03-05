@@ -13,7 +13,8 @@ class DirectionsModel {
                 StudyDirection(
                     codeDirection = "0$i.0$i.0$i",
                     nameDirection = "Направление $i",
-                    structDivision = "Опция " + Random.nextInt(4)
+                    structDivision = "Опция " + Random.nextInt(4),
+                    nameSpecialty = "Специальность $i"
                 )
             )
         }
@@ -47,5 +48,9 @@ class DirectionsModel {
     fun findDirection(codeDirection: String): StudyDirection? {
         val newDirection: StudyDirection? = allDirections.find{ x: StudyDirection -> x.codeDirection == codeDirection}
         return newDirection
+    }
+
+    fun getAllDirections(): MutableList<StudyDirection> {
+        return allDirections
     }
 }

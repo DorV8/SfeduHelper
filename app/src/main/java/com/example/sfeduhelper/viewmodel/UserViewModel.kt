@@ -8,10 +8,14 @@ import com.example.sfeduhelper.classes.Link
 import com.example.sfeduhelper.classes.User
 import com.example.sfeduhelper.model.DirectionsModel
 import com.example.sfeduhelper.model.LinksModel
+import com.example.sfeduhelper.model.NewsModel
 import com.example.sfeduhelper.model.SettingsModel
 import com.example.sfeduhelper.model.UserModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import com.example.sfeduhelper.classes.News
+import com.example.sfeduhelper.classes.StudyDirection
+import com.example.sfeduhelper.model.InfoModel
 
 class UserViewModel: ViewModel() {
     val userModel: UserModel = UserModel()
@@ -91,8 +95,45 @@ class UserViewModel: ViewModel() {
     fun updateCategoryNotification(category: String) {
         settingsModel.updateCategory(category)
     }
+
+    fun getVersion(): String {
+        return settingsModel.getVersion()
+    }
+
+    fun setVersion(vers: String) {
+        settingsModel.setVersion(vers)
+    }
+
+    fun getFAQ(): List<Pair<String, String>> {
+        return settingsModel.getFAQ()
+    }
+
+    fun setFAQ(){
+        settingsModel.setFAQ()
+    }
     //_________________________________________________//
 
+    //РАБОТА С NewsModel
+
+    private var newsModel: NewsModel = NewsModel()
+
+    fun addNews(sourceName: String, tags: List<String>, title: String, link: String ) {
+        newsModel.addNews(sourceName, tags, title, link)
+    }
+
+    fun addNewsSamples() {
+        val listTitle: List<String> = listOf("Новости о процессе поступления в ИКТИБ ЮФУ", "Новые специальности на основе блокчейна", "Процесс поступления пошагово: от выбора до подачи документов")
+
+        listTitle.forEach{item ->
+            addNews("Site", listOf("tag 1","tag 2"), item, "link" )
+        }
+    }
+
+    fun getNews(): List<News> {
+        return newsModel.getNews()
+    }
+
+    //_________________________________________________//
 
 
     //ПОЛУЧЕНИЕ ЦВЕТОВ ИЗ РГБ(А)
@@ -110,6 +151,55 @@ class UserViewModel: ViewModel() {
 
         val argbColor = (alpha shl 24) or (red shl 16) or (green shl 8) or blue
         return Color(argbColor.toLong())
+    }
+
+
+    //ПОСТУПЛЕНИЕ
+
+    private var infoModel: InfoModel = InfoModel()
+
+    fun addInfoSamples() {
+        infoModel.addInfoInstitute("ICTIS", "just some text for now")
+    }
+
+    //TODO: добавить получение всей этой инфы с сервера
+
+    fun getDescRulesAdm(): String {
+        return "Plain text just for view"
+    }
+
+    fun getDescChooseDir(): String {
+        return "Plain text just for view"
+    }
+
+    fun getDescDocuments(): String {
+        return "Plain text just for view"
+    }
+
+    fun getDescIndAch(): String {
+        return "Plain text just for view"
+    }
+
+    fun getDescEntranceTests(): String {
+        return "Plain text just for view"
+    }
+
+    fun getDescDeadlineDocuments(): String {
+        return "Plain text just for view"
+    }
+
+
+    //_________________________________________________//
+
+    //ИНФОРМАЦИЯ ОБ ИНСТИТУТЕ
+
+
+    fun getInfoInstitute(nameInstitute: String): String {
+        return infoModel.getInfoInstitute(nameInstitute)
+    }
+
+    fun getAllDirections(): MutableList<StudyDirection> {
+        return directionsModel.getAllDirections()
     }
 
     //_________________________________________________//

@@ -1,27 +1,29 @@
 package com.example.sfeduhelper.view.ui.screens
 
-import android.widget.ImageButton
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalMapOf
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sfeduhelper.R
 import com.example.sfeduhelper.viewmodel.UserViewModel
@@ -29,60 +31,71 @@ import com.example.sfeduhelper.viewmodel.UserViewModel
 @Composable
 fun MainMenuPage(navController: NavController, viewModel: UserViewModel){
 
-    Box () {
-        Column(
-            modifier = Modifier.padding(20.dp)
+    var pickedPage by remember { mutableStateOf(1) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+
+        Box (
+            modifier = Modifier.padding(bottom = 40.dp)
         ) {
-            //Заголовок
-            Box(
-                modifier = Modifier
-                    .height(100.dp)
-                    .fillMaxWidth()
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.header),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .fillMaxSize()
-                )
-                Text(
-                    text = "Главное меню",
-                    fontSize = 25.sp,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                        .align(Alignment.BottomStart)
-                )
+            when (pickedPage) {
+                1 -> HomeScreen(navController, viewModel)
+                2 -> CalculatorScreen(navController, viewModel)
+                3 -> NewsScreen(navController, viewModel)
             }
-
-            /*//Поступление
-            Box (
-                modifier = Modifier
-                    .height(250.dp)
-                    .fillMaxWidth()
-            ){
-                Image(
-                    painter = painterResource(R.drawable.admission),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .clickable(
-                            onClick = {navController.navigate("AdmissionPage")}
-                        )
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .border(2.dp, color = viewModel.getRGBColor(97, 113, 238), shape = RoundedCornerShape(24.dp))
-                )
-
-                Button(
-                    onClick = {navController.navigate("AdmissionPage")},
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .padding(bottom = 30.dp)
-                ) {
-                    Text("Поступление")
-                }
-            }*/
         }
-        //вот здесь будет маленькая кнопочка для сроков
+
+        //переделать, чтобы было нормальное разрешение картинок
+        Row (
+            modifier = Modifier
+                .height(85.dp)
+                .align(Alignment.BottomCenter)
+                .background(color = Color.White)
+                .fillMaxWidth()
+                .padding(bottom = 50.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        )
+        {
+            Image(
+                painter = painterResource(R.drawable.grid),
+                contentDescription = "",
+                modifier = Modifier
+                    .clickable {
+                        pickedPage = 1
+                    }
+                    .height(50.dp)
+                    .width(50.dp)
+            )
+
+            Image(
+                painter = painterResource(R.drawable.calculator),
+                contentDescription = "",
+                modifier = Modifier
+                    .clickable {
+                        pickedPage = 2
+                    }
+                    .height(50.dp)
+                    .width(50.dp)
+            )
+
+            Image(
+                painter = painterResource(R.drawable.news),
+                contentDescription = "",
+                modifier = Modifier
+                    .clickable {
+                            pickedPage = 3
+                    }
+                    .height(50.dp)
+                    .width(50.dp)
+            )
+        }
     }
 }
+
+@Composable
+fun CalculatorScreen(navController: NavController, viewModel: UserViewModel) {
+}
+

@@ -5,11 +5,13 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,18 +21,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -165,21 +170,81 @@ fun SettingsPage(navController: NavController, viewModel: UserViewModel){
                     }
                 }
             )
+            val questionsAndAnswers = viewModel.getFAQ()
+
             ExpandableSettingItem(
                 icon = Icons.Default.Favorite,
                 title = "FAQ",
                 content = {
-                    Text("Часто задаваемые вопросы.")
+                    Column {
+                        questionsAndAnswers.forEach{ (question, answer) ->
+                            QuestionAnswerItem(question, answer, viewModel)
+                        }
+                    }
                 }
             )
             ExpandableSettingItem(
                 icon = Icons.Default.Info,
                 title = "О приложении",
                 content = {
-                    Text("Версия 0.0.1\nКоманда: Response:200\nРоадмап:")
+                    Text("Версия ${viewModel.getVersion()}\nКоманда: Response:200\nРоадмап:")
                 }
             )
         }
+    }
+}
+
+@Composable
+fun QuestionAnswerItem(question: String, answer: String, viewModel: UserViewModel) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        // Вопрос (выравнивание по левому краю)
+        Box(
+            modifier = Modifier
+                .wrapContentWidth()
+                .background(
+                    color = viewModel.getRGBAColor(
+                        143,
+                        74,
+                        234,
+                        alpha = (0.56 * 255).toInt()
+                    ), // Светло-голубой цвет
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(16.dp)
+        ) {
+            Text(
+                text = question,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier.align(Alignment.TopStart)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp)) // Отступ между вопросом и ответом
+
+        // Ответ (выравнивание по правому краю)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.End)
+                .background(
+                    color = Color.White, // Светло-зелёный цвет
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(16.dp)
+        ) {
+            Text(
+                text = answer,
+                fontSize = 16.sp,
+                color = Color.Black,
+                modifier = Modifier.align(Alignment.BottomEnd)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
@@ -208,15 +273,30 @@ fun ExpandableSettingItem(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.clickable { isExpanded = !isExpanded }
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = title,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(text = title, fontSize = 18.sp)
+                Box (
+                    modifier = Modifier
+                        .weight(1f)
+                ){
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = title,
+                        modifier = Modifier.size(24.dp).align(Alignment.CenterStart)
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(text = title, fontSize = 18.sp, modifier = Modifier.padding(start = 40.dp))
+                }
+
+                Box {
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "",
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                    )
+                }
             }
             AnimatedVisibility(
                 visible = isExpanded,

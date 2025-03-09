@@ -5,6 +5,7 @@ public class StudyDirection (var structDivision: String, var codeDirection: Stri
     }
 
     constructor(codeDirection: String, nameDirection: String, nameSpecialty: String) : this("", codeDirection, nameDirection, -1, nameSpecialty){}
+    constructor() : this(structDivision = "", codeDirection = "", nameDirection = "", levelPriority = -1, nameSpecialty = "")
 
     //количество бюджетных мест
     var numberSeats: Int = -1
@@ -14,6 +15,9 @@ public class StudyDirection (var structDivision: String, var codeDirection: Stri
 
     //проходной балл за прошлый год
     var passingScore: Int = -1
+
+    //цена обучения за год
+    private var priceYear = 0
 
     //Форма обучения: очная (true) или заочная (false)
     private var isFullTimeForm: Boolean = true
@@ -59,5 +63,13 @@ public class StudyDirection (var structDivision: String, var codeDirection: Stri
 
     fun setLevelStudy(level: Int) {
         levelStudy = level
+    }
+
+    fun getPrice(): Int {
+        return 0
+    }
+
+    fun setPrice(price: Int) {
+        priceYear = price
     }
 }

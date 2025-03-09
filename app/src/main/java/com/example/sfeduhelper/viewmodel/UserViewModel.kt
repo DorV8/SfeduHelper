@@ -202,5 +202,13 @@ class UserViewModel: ViewModel() {
         return directionsModel.getAllDirections()
     }
 
+    fun setSelectedDirection(direction: StudyDirection) {
+        directionsModel.setSelectedDirection(direction)
+    }
+
+    fun getSelectedDirection(): StudyDirection {
+        return directionsModel.getSelectedDirection()
+    }
+
     //_________________________________________________//
 }

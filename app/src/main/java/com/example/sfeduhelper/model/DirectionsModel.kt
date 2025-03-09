@@ -5,9 +5,11 @@ import kotlin.random.Random
 
 class DirectionsModel {
     private var allDirections: MutableList<StudyDirection> = mutableListOf()
+    private var selectedDirection: StudyDirection = StudyDirection()
 
     fun setDirections() {
         //здесь с сервера будут подгружаться все направления
+        //TODO: добавить функцию подгрузки направлений с сервера
         for (i in 1..9){
             allDirections.add(
                 StudyDirection(
@@ -53,4 +55,13 @@ class DirectionsModel {
     fun getAllDirections(): MutableList<StudyDirection> {
         return allDirections
     }
+
+    fun setSelectedDirection(direction: StudyDirection) {
+        selectedDirection = direction
+    }
+
+    fun getSelectedDirection(): StudyDirection {
+        return selectedDirection
+    }
+
 }

@@ -99,7 +99,6 @@ fun HomeScreen(navController: NavController, viewModel: UserViewModel) {
                             )
                             .clickable {
                                 navController.navigate("AdmissionScreen")
-                                Toast.makeText(context, "Проверка", Toast.LENGTH_LONG).show()
                             }
                     )
                     Box(
@@ -165,7 +164,6 @@ fun HomeScreen(navController: NavController, viewModel: UserViewModel) {
                             )
                             .clickable {
                                 navController.navigate("InfoICTIS")
-                                Toast.makeText(context, "Проверка", Toast.LENGTH_LONG).show()
                             }
                     )
                     Box(
@@ -226,7 +224,7 @@ fun HomeScreen(navController: NavController, viewModel: UserViewModel) {
                             )
                             .clickable {
                                 //navController.navigate("")
-                                Toast.makeText(context, "Проверка", Toast.LENGTH_LONG).show()
+                                navController.navigate("SpecialtyAndDirectionsPage")
                             }
                     )
                     Box(

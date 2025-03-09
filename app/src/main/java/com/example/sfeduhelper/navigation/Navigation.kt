@@ -15,6 +15,7 @@ import com.example.sfeduhelper.view.ui.screens.ProfilePage
 import com.example.sfeduhelper.view.ui.screens.SecondScreen
 import com.example.sfeduhelper.view.ui.screens.SettingsPage
 import com.example.sfeduhelper.view.ui.screens.SpecialtyAndDirectionsScreen
+import com.example.sfeduhelper.view.ui.screens.SpecialtyInfoScreen
 import com.example.sfeduhelper.view.ui.screens.StartScreen
 import com.example.sfeduhelper.viewmodel.UserViewModel
 
@@ -52,5 +53,7 @@ fun NavigationApp(viewModel: UserViewModel) {
         composable("InfoICTIS") { InfoInstitute("ICTIS", viewModel)}
 
         composable("SpecialtyAndDirectionsPage") { SpecialtyAndDirectionsScreen(navController, viewModel)}
+
+        composable("SpecialtyInfoScreen") { SpecialtyInfoScreen(viewModel)}
     }
 }

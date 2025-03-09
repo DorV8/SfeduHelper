@@ -3,6 +3,7 @@ package com.example.sfeduhelper.view.ui.screens
 import android.graphics.PathEffect
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,6 +33,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,7 +49,8 @@ fun SpecialtyAndDirectionsScreen(navController: NavController, viewModel: UserVi
             Text(
                 text = "Специальности и направления подготовки",
                 modifier = Modifier
-                    .width(400.dp),
+                    .width(400.dp)
+                    .padding(start = 15.dp, top = 5.dp),
                 textAlign = TextAlign.Left
             )
         }
@@ -85,8 +89,8 @@ fun SpecialtyAndDirectionsScreen(navController: NavController, viewModel: UserVi
             directions.forEach{ direction ->
                 Box (
                     modifier = Modifier.clickable {
-                    //TODO: переход на полный просмотр этой специальности
-                    //navController.navigate("")
+                        viewModel.setSelectedDirection(direction)
+                        navController.navigate("SpecialtyInfoScreen")
                     }
                 ) {
                     SpecialtyCard(
@@ -96,11 +100,12 @@ fun SpecialtyAndDirectionsScreen(navController: NavController, viewModel: UserVi
                         direction.getForm(),
                         direction.getLevelStudy(),
                         direction.numberSeats,
-                        0,
-                        viewModel.getRGBColor(180, 39, 240)
+                        direction.getPrice(),
+                        borderColor = viewModel.getRGBColor(180, 39, 240),
+                        levelColor = viewModel.getRGBAColor(143, 74, 234, (0.75 * 255).toInt())
                     )
                 }
-                Spacer (modifier = Modifier.height(8.dp))
+                Spacer (modifier = Modifier.height(5.dp))
             }
         }
     }
@@ -115,7 +120,8 @@ fun SpecialtyCard(
     levelStudy: String,
     numberSeats: Int,
     price: Int,
-    borderColor: Color
+    borderColor: Color,
+    levelColor: Color
 ) {
         Card (
             modifier = Modifier
@@ -125,21 +131,54 @@ fun SpecialtyCard(
                 .border(2.dp, shape = RoundedCornerShape(24.dp), color = borderColor)
         ){
             Row (
-                modifier = Modifier.padding(start = 10.dp)
+                modifier = Modifier.padding(10.dp)
             ) {
-                Text(codeSpecialty)
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(nameSpecialty)
+                Text(
+                    text = codeSpecialty,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = nameSpecialty
+                )
             }
-            Text(nameDirection, modifier = Modifier.padding(start = 10.dp))
-            Row (
-                modifier = Modifier.padding(start = 10.dp)
+            Text(
+                text = "($nameDirection)",
+                modifier = Modifier.padding(10.dp))
+            Row ( modifier = Modifier
+                    .padding(10.dp)
             ) {
-                Text(levelStudy)
+                Surface(
+                    shape = RoundedCornerShape(24.dp),
+                    color = levelColor
+                ) {
+                    Box(
+                        modifier = Modifier.padding(5.dp)
+                    ) {
+                        Text(
+                            text = levelStudy,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(formStudy)
+                Surface(
+                    shape = RoundedCornerShape(24.dp),
+                    color = levelColor
+                ) {
+                    Box(
+                        modifier = Modifier.padding(5.dp)
+                    ) {
+                        Text(
+                            text = formStudy,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
-            Text ("Количество бюджетных мест: " + numberSeats, modifier = Modifier.padding(start = 10.dp))
-            Text("Стоимость обучения: " + price, modifier = Modifier.padding(start = 10.dp))
+            Text ("Количество бюджетных мест: " + numberSeats, modifier = Modifier.padding(10.dp))
+            Text("Стоимость обучения: " + price, modifier = Modifier.padding(10.dp))
         }
 }

@@ -4,6 +4,7 @@ import android.graphics.Path.Direction
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import com.example.sfeduhelper.classes.Exam
 import com.example.sfeduhelper.classes.Link
 import com.example.sfeduhelper.classes.User
 import com.example.sfeduhelper.model.DirectionsModel
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.example.sfeduhelper.classes.News
 import com.example.sfeduhelper.classes.StudyDirection
+import com.example.sfeduhelper.model.CalculatorModel
 import com.example.sfeduhelper.model.InfoModel
 
 class UserViewModel: ViewModel() {
@@ -70,6 +72,10 @@ class UserViewModel: ViewModel() {
     fun setDirections() {
         directionsModel.setDirections()
     }
+
+    fun setDirectionsExample() {
+        directionsModel.setDirectionsExample()
+    }
     //_________________________________________________//
 
     val linksModel: LinksModel = LinksModel()
@@ -79,6 +85,11 @@ class UserViewModel: ViewModel() {
     fun setLinks() {
         linksModel.setLinks()
     }
+
+    fun setLinksExample() {
+        linksModel.setLinksExample()
+    }
+
     fun getLinks(): MutableList<Link> {
         return linksModel.getLinks()
     }
@@ -153,6 +164,7 @@ class UserViewModel: ViewModel() {
         return Color(argbColor.toLong())
     }
 
+    //РАБОТА С InfoModel
 
     //ПОСТУПЛЕНИЕ
 
@@ -210,5 +222,67 @@ class UserViewModel: ViewModel() {
         return directionsModel.getSelectedDirection()
     }
 
+    //_________________________________________________//
+
+
+    //РАБОТА С CalculatorModel
+
+    private var calculatorModel: CalculatorModel = CalculatorModel(directionsModel)
+
+    fun getAllExamsName(): MutableList<String> {
+        return calculatorModel.getAllExamsName()
+    }
+
+    fun setExamsSample() {
+        calculatorModel.setExamsSample()
+    }
+
+    fun getAllExams(): MutableList<Exam> {
+        return calculatorModel.getAllExams()
+    }
+
+    fun getSelectedExams(): MutableList<Exam> {
+        return calculatorModel.getSelectedExams()
+    }
+
+
+    fun calculateSpecialties(): List<StudyDirection> {
+        var specialties: List<StudyDirection> = listOf()
+
+        if (getSelectedExams().count() > 3) {
+            //тут нужно будет разбить на группы по три экзамена и проверить каждый
+        }
+        else {
+            specialties = checkExams(getSelectedExams())
+        }
+
+        return specialties
+    }
+
+    fun checkExams(threeExams: MutableList<Exam>): List<StudyDirection> {
+        var directions: List<StudyDirection> = filterDirections(getAllDirections(), threeExams)
+
+        return directions
+    }
+
+    fun containsRequiredExams(exams: MutableList<Exam>, requiredExams: MutableList<Exam>): Boolean {
+        return requiredExams.all { requiredExam ->
+            exams.any { it.nameExam == requiredExam.nameExam && it.passScore >= requiredExam.passScore }
+        }
+    }
+
+    fun filterDirections(directions: MutableList<StudyDirection>, requiredExams: MutableList<Exam>): List<StudyDirection> {
+        return directions.filter { direction ->
+            containsRequiredExams(direction.Exams, requiredExams)
+        }
+    }
+
+    fun addExam(titleExam: String) {
+        calculatorModel.addExam(titleExam)
+    }
+
+    fun removeExam(titleExam: String) {
+        calculatorModel.removeExam(titleExam)
+    }
     //_________________________________________________//
 }

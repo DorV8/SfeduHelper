@@ -6,6 +6,10 @@ class LinksModel {
     private var links: MutableList<Link> = mutableListOf()
 
     fun setLinks() {
+        //TODO: Добавить подгрузку с сервера
+    }
+
+    fun setLinksExample() {
         for (i in 1..5){
             links.add(
                 Link(

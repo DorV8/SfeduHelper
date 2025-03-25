@@ -24,12 +24,13 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val viewModel = UserViewModel()
-                    viewModel.setDirections()
-                    viewModel.setLinks()
+                    viewModel.setDirectionsExample()
+                    viewModel.setLinksExample()
                     viewModel.setFAQ()
                     viewModel.addNewsSamples()
 
                     viewModel.addInfoSamples()
+                    viewModel.setExamsSample()
 
                     NavigationApp(viewModel)
                 }

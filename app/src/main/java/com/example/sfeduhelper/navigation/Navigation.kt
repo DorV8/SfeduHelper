@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sfeduhelper.view.ui.screens.AddSpecialtyPage
 import com.example.sfeduhelper.view.ui.screens.AdmissionExtraInfoScreen
 import com.example.sfeduhelper.view.ui.screens.AdmissionScreen
+import com.example.sfeduhelper.view.ui.screens.CalculatedSpecialtiesScreen
 import com.example.sfeduhelper.view.ui.screens.DeleteSpecialtyPage
 import com.example.sfeduhelper.view.ui.screens.InfoInstitute
 import com.example.sfeduhelper.view.ui.screens.LinksPage
@@ -55,5 +56,7 @@ fun NavigationApp(viewModel: UserViewModel) {
         composable("SpecialtyAndDirectionsPage") { SpecialtyAndDirectionsScreen(navController, viewModel)}
 
         composable("SpecialtyInfoScreen") { SpecialtyInfoScreen(viewModel)}
+
+        composable("CalculatedSpecialtiesScreen") { CalculatedSpecialtiesScreen(navController, viewModel)}
     }
 }

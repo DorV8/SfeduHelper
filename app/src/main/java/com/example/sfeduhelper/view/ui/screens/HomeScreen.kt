@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -275,6 +276,7 @@ fun HomeScreen(navController: NavController, viewModel: UserViewModel) {
                     .background(Color.Transparent)
                     .padding(top = 140.dp)
                     .width(70.dp)
+                    .height(45.dp)
                     .clip(
                         RoundedCornerShape(
                             topStart = 64.dp,
@@ -284,7 +286,16 @@ fun HomeScreen(navController: NavController, viewModel: UserViewModel) {
                         )
                     )
                     .offset(x = 30.dp)
-            ){}
+            ){
+                Image(
+                    painter = painterResource(R.drawable.notification),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .width(70.dp)
+                        .height(45.dp)
+                        .offset(x = (-20).dp)
+                )
+            }
         }
         //___________________________________________________________________//
 

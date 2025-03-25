@@ -95,7 +95,4 @@ fun MainMenuPage(navController: NavController, viewModel: UserViewModel){
     }
 }
 
-@Composable
-fun CalculatorScreen(navController: NavController, viewModel: UserViewModel) {
-}
 

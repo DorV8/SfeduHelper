@@ -27,7 +27,6 @@ import com.example.sfeduhelper.viewmodel.UserViewModel
 fun StartScreen(navController: NavController, viewModel: UserViewModel){
     val background = painterResource(R.drawable.start_background)
 
-    //viewModel.setDirections()
     Image(
         painter = background,
         contentDescription = null,

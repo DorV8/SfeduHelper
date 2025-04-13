@@ -1,12 +1,30 @@
 package com.example.sfeduhelper.classes
 
+import androidx.annotation.NonNull
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.sfeduhelper.R
 
-class Exam (var nameExam: String, var passScore: Int, var iconId: Int) {
+@Entity(tableName = "Exams")
+class Exam {
 
-    constructor(nameExam: String): this (nameExam, -1, R.drawable.sfedu_icon)
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id_exam")
+    var id: Int = 0
 
-    constructor(nameExam: String, passScore: Int): this (nameExam, passScore, R.drawable.sfedu_icon)
+    @ColumnInfo(name = "name_exam")
+    var name: String? = null
+
+    var iconId: Int = -1
+
+    constructor() {}
+
+    constructor(nameExam: String) {
+        this.name = nameExam
+        this.iconId = R.drawable.sfedu_icon
+    }
 
     fun setIcon(iconId: Int) {
         this.iconId = iconId

@@ -1,29 +1,58 @@
 package com.example.sfeduhelper.classes
 
-public class StudyDirection (var structDivision: String, var codeDirection: String, var nameDirection: String, var levelPriority: Int, var nameSpecialty: String) {
-    constructor(structDivision: String, codeDirection: String, nameDirection: String, nameSpecialty: String) : this(structDivision, codeDirection, nameDirection, -1, nameSpecialty){
+import androidx.annotation.NonNull
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "Specialty")
+public class StudyDirection /*(var structDivision: String, var codeDirection: String, var nameDirection: String, var levelPriority: Int, var nameSpecialty: String)*/ {
+
+    @PrimaryKey()
+    @NonNull
+    @ColumnInfo(name = "code_specialty")
+    var codeDirection: String = ""
+
+    @ColumnInfo(name = "name_specialty")
+    var nameSpecialty: String = ""
+
+    @ColumnInfo(name = "id_form")
+    var idForm: Int = -1
+
+    @ColumnInfo(name = "id_division")
+    var idDivision: Int = -1
+
+    @ColumnInfo(name = "id_level")
+    var idLevel: Int = -1
+
+    @ColumnInfo(name = "number_budget_seats")
+    var numberBudgetSeats: Int = -1
+
+    @ColumnInfo(name = "number_paid_seats")
+    var numberPaidSeats: Int = -1
+
+    @ColumnInfo(name = "price_year")
+    var priceYear: Int = 0
+
+    @ColumnInfo(name = "realisation_place")
+    var place: String = "Таганрог"
+
+    @ColumnInfo(name = "average_score")
+    var averageScore: Int = 0
+
+    @ColumnInfo(name = "passing_score")
+    var passingScore: Int = 0
+
+    constructor(codeDirection: String, nameSpecialty: String) {
+        this.codeDirection = codeDirection
+        this.nameSpecialty = nameSpecialty
     }
 
-    constructor(codeDirection: String, nameDirection: String, nameSpecialty: String) : this("", codeDirection, nameDirection, -1, nameSpecialty){}
-    constructor() : this(structDivision = "", codeDirection = "", nameDirection = "", levelPriority = -1, nameSpecialty = "")
+    constructor() {}
 
-    //количество бюджетных мест
-    var numberSeats: Int = -1
-
-    //средний балл за прошлый год
-    var avrScore: Int = -1
-
-    //проходной балл за прошлый год
-    var passingScore: Int = -1
-
-    //цена обучения за год
-    private var priceYear = 0
-
-    //Форма обучения: очная (true) или заочная (false)
-    private var isFullTimeForm: Boolean = true
-
-    //Уровень обучения: бакалавриат (1), специалитет (2), аспирантура (3) и магистратура (4)
-    private var levelStudy: Int = 1
+    fun isFullTime(): Boolean {
+        return (idForm == 1)
+    }
 
     var Exams: MutableList<Exam> = mutableListOf()
 
@@ -33,26 +62,22 @@ public class StudyDirection (var structDivision: String, var codeDirection: Stri
         )
     }
 
-    fun AddExamWithScore(nameExam: String, passScore: Int){
-        Exams.add(
-            Exam(nameExam, passScore)
-        )
-    }
-
     fun getForm(): String {
-        return if (isFullTimeForm)
+        //TODO: заменить на запрос к БД
+        return if (isFullTime())
             "Очная"
         else
             "Заочная"
     }
 
     fun setForm(isFullTime: Boolean) {
-        isFullTimeForm = isFullTime
+        //TODO
     }
 
     fun getLevelStudy(): String {
+        //TODO
         var res = ""
-        when (levelStudy) {
+        when (idLevel) {
             1 -> res = "Бакалавриат"
             2 -> res = "Специалитет"
             3 -> res = "Аспирантура"
@@ -62,14 +87,17 @@ public class StudyDirection (var structDivision: String, var codeDirection: Stri
     }
 
     fun setLevelStudy(level: Int) {
-        levelStudy = level
+        //TODO
+        idLevel = level
     }
 
     fun getPrice(): Int {
+        //TODO
         return 0
     }
 
     fun setPrice(price: Int) {
+        //TODO
         priceYear = price
     }
 }
